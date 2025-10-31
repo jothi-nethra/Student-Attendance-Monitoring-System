@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 1000
+
+// Function to return operator precedence
+int precedence(char op) {
+    switch (op) {
+        case '+':
+        case '-': return 1;
+        case '*':
+        case '/': return 2;
+        default: return 0;
+    }
+}
+
+// Check if character is operator
+int isOperator(char* token) {
+    return (strcmp(token, "+") == 0 ||
+            strcmp(token, "-") == 0 ||
+            strcmp(token, "*") == 0 ||
+            strcmp(token, "/") == 0);
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+    getchar(); // Consume newline after integer input
+
+    while (T--) {
+        char expr[1000];
+        fgets(expr, sizeof(expr), stdin);
+
+        // Stack for operators
+        char* stack[MAX];
+        int top = -1;
+
+        // Output buffer
+        char output[2000] = "";
+
+        // Tokenize input based on space
+        char* token = strtok(expr, " \n");
+
+        while (token != NULL) {
+            if (strcmp(token, "?") == 0) {
+                break; // End of expression
+            }
+            // If token is number/operand
+            else if (isdigit(token[0])) {
+                strcat(output, token);
+                strcat(output, " ");
+            }
+            // If token is '('
+            else if (strcmp(token, "(") == 0) {
+                stack[++top] = token;
+            }
+            // If token is ')'
+            else if (strcmp(token, ")") == 0) {
+                while (top >= 0 && strcmp(stack[top], "(") != 0) {
+                    strcat(output, stack[top--]);
+                    strcat(output, " ");
+                }
+                if (top >= 0 && strcmp(stack[top], "(") == 0)
+                    top--; // Pop '('
+            }
+            // If token is operator
+            else if (isOperator(token)) {
+                while (top >= 0 && isOperator(stack[top]) &&
+                       precedence(stack[top][0]) >= precedence(token[0])) {
+                    strcat(output, stack[top--]);
+                    strcat(output, " ");
+                }
+                stack[++top] = token;
+            }
+            token = strtok(NULL, " \n");
+        }
+
+        // Pop remaining operators
+        while (top >= 0) {
+            if (strcmp(stack[top], "(") != 0) {
+                strcat(output, stack[top]);
+                strcat(output, " ");
+            }
+            top--;
+        }
+
+        // Trim trailing space if any
+        int len = strlen(output);
+        if (len > 0 && output[len - 1] == ' ')
+            output[len - 1] = '\0';
+
+        printf("%s\n", output);
+    }
+
+    return 0;
+}
