@@ -1,98 +1,234 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
-#define MAX 1000
+typedef struct Attendance {
+    int studentID;
+    char date[11]; // Format: YYYY-MM-DD
+    char status[10]; // "Present" or "Absent"
+    struct Attendance *next;
+} Attendance;
 
-// Function to return operator precedence
-int precedence(char op) {
-    switch (op) {
-        case '+':
-        case '-': return 1;
-        case '*':
-        case '/': return 2;
-        default: return 0;
+Attendance* head = NULL;
+
+// Function prototypes
+Attendance* createRecord(int id, const char* date, const char* status);
+void addAttendance(int id, const char* date, const char* status);
+void deleteAttendance(int id, const char* date);
+void searchAttendance(int id, const char* date);
+void displayAttendanceByDate(const char* date);
+void reverseDisplay(Attendance* node);
+Attendance* cloneList(Attendance* src);
+void displayAll();
+void freeList(Attendance* head);
+
+Attendance* createRecord(int id, const char* date, const char* status) {
+    Attendance* newRec = (Attendance*)malloc(sizeof(Attendance));
+    newRec->studentID = id;
+    strcpy(newRec->date, date);
+    strcpy(newRec->status, status);
+    newRec->next = NULL;
+    return newRec;
+}
+
+void addAttendance(int id, const char* date, const char* status) {
+    Attendance* newRec = createRecord(id, date, status);
+    if (head == NULL) {
+        head = newRec;
+    } else {
+        Attendance* temp = head;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = newRec;
+    }
+    printf("✅ Attendance record added successfully.\n");
+}
+
+void deleteAttendance(int id, const char* date) {
+    if (head == NULL) {
+        printf("⚠️ No records to delete.\n");
+        return;
+    }
+
+    Attendance *temp = head, *prev = NULL;
+
+    while (temp != NULL) {
+        if (temp->studentID == id && strcmp(temp->date, date) == 0) {
+            if (prev == NULL)
+                head = temp->next;
+            else
+                prev->next = temp->next;
+            free(temp);
+            printf("✅ Record deleted successfully.\n");
+            return;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+
+    printf("⚠️ Record not found.\n");
+}
+
+void searchAttendance(int id, const char* date) {
+    Attendance* temp = head;
+    while (temp != NULL) {
+        if (temp->studentID == id && strcmp(temp->date, date) == 0) {
+            printf("🔍 Found: Student ID: %d | Date: %s | Status: %s\n", 
+                   temp->studentID, temp->date, temp->status);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("⚠️ Record not found.\n");
+}
+
+void displayAttendanceByDate(const char* date) {
+    Attendance* temp = head;
+    int found = 0;
+    printf("\n📅 Attendance for %s:\n", date);
+    printf("--------------------------------------\n");
+    while (temp != NULL) {
+        if (strcmp(temp->date, date) == 0) {
+            printf("Student ID: %d | Status: %s\n", temp->studentID, temp->status);
+            found = 1;
+        }
+        temp = temp->next;
+    }
+    if (!found)
+        printf("⚠️ No attendance records found for %s.\n", date);
+}
+
+void reverseDisplay(Attendance* node) {
+    if (node == NULL)
+        return;
+    reverseDisplay(node->next);
+    printf("Student ID: %d | Date: %s | Status: %s\n", 
+           node->studentID, node->date, node->status);
+}
+
+Attendance* cloneList(Attendance* src) {
+    if (src == NULL)
+        return NULL;
+
+    Attendance* clonedHead = NULL, *clonedTail = NULL;
+
+    while (src != NULL) {
+        Attendance* newNode = createRecord(src->studentID, src->date, src->status);
+        if (clonedHead == NULL)
+            clonedHead = clonedTail = newNode;
+        else {
+            clonedTail->next = newNode;
+            clonedTail = newNode;
+        }
+        src = src->next;
+    }
+
+    printf("✅ Attendance list cloned successfully.\n");
+    return clonedHead;
+}
+
+void displayAll() {
+    Attendance* temp = head;
+    if (temp == NULL) {
+        printf("⚠️ No attendance records available.\n");
+        return;
+    }
+
+    printf("\n📋 All Attendance Records:\n");
+    printf("--------------------------------------\n");
+    while (temp != NULL) {
+        printf("Student ID: %d | Date: %s | Status: %s\n", 
+               temp->studentID, temp->date, temp->status);
+        temp = temp->next;
     }
 }
 
-// Check if character is operator
-int isOperator(char* token) {
-    return (strcmp(token, "+") == 0 ||
-            strcmp(token, "-") == 0 ||
-            strcmp(token, "*") == 0 ||
-            strcmp(token, "/") == 0);
+void freeList(Attendance* head) {
+    Attendance* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
 }
 
 int main() {
-    int T;
-    scanf("%d", &T);
-    getchar(); // Consume newline after integer input
+    int choice, id;
+    char date[11], status[10];
+    Attendance* adminClone = NULL;
 
-    while (T--) {
-        char expr[1000];
-        fgets(expr, sizeof(expr), stdin);
+    while (1) {
+        printf("\n====== Student Attendance Monitoring System ======\n");
+        printf("1. Add Attendance Record\n");
+        printf("2. Delete Attendance Record\n");
+        printf("3. Search Attendance\n");
+        printf("4. Display Attendance by Date\n");
+        printf("5. Display All Attendance (Reverse Order)\n");
+        printf("6. Clone Attendance List (for Admin)\n");
+        printf("7. Display All Records\n");
+        printf("0. Exit\n");
+        printf("==================================================\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar(); // clear newline
 
-        // Stack for operators
-        char* stack[MAX];
-        int top = -1;
+        switch (choice) {
+            case 1:
+                printf("Enter Student ID: ");
+                scanf("%d", &id);
+                printf("Enter Date (YYYY-MM-DD): ");
+                scanf("%s", date);
+                printf("Enter Status (Present/Absent): ");
+                scanf("%s", status);
+                addAttendance(id, date, status);
+                break;
 
-        // Output buffer
-        char output[2000] = "";
+            case 2:
+                printf("Enter Student ID to delete: ");
+                scanf("%d", &id);
+                printf("Enter Date (YYYY-MM-DD): ");
+                scanf("%s", date);
+                deleteAttendance(id, date);
+                break;
 
-        // Tokenize input based on space
-        char* token = strtok(expr, " \n");
+            case 3:
+                printf("Enter Student ID to search: ");
+                scanf("%d", &id);
+                printf("Enter Date (YYYY-MM-DD): ");
+                scanf("%s", date);
+                searchAttendance(id, date);
+                break;
 
-        while (token != NULL) {
-            if (strcmp(token, "?") == 0) {
-                break; // End of expression
-            }
-            // If token is number/operand
-            else if (isdigit(token[0])) {
-                strcat(output, token);
-                strcat(output, " ");
-            }
-            // If token is '('
-            else if (strcmp(token, "(") == 0) {
-                stack[++top] = token;
-            }
-            // If token is ')'
-            else if (strcmp(token, ")") == 0) {
-                while (top >= 0 && strcmp(stack[top], "(") != 0) {
-                    strcat(output, stack[top--]);
-                    strcat(output, " ");
-                }
-                if (top >= 0 && strcmp(stack[top], "(") == 0)
-                    top--; // Pop '('
-            }
-            // If token is operator
-            else if (isOperator(token)) {
-                while (top >= 0 && isOperator(stack[top]) &&
-                       precedence(stack[top][0]) >= precedence(token[0])) {
-                    strcat(output, stack[top--]);
-                    strcat(output, " ");
-                }
-                stack[++top] = token;
-            }
-            token = strtok(NULL, " \n");
+            case 4:
+                printf("Enter Date (YYYY-MM-DD): ");
+                scanf("%s", date);
+                displayAttendanceByDate(date);
+                break;
+
+            case 5:
+                printf("\n🔄 Attendance Records in Reverse Order:\n");
+                printf("--------------------------------------\n");
+                reverseDisplay(head);
+                break;
+
+            case 6:
+                adminClone = cloneList(head);
+                printf("\n📁 Cloned Records:\n");
+                displayAll();
+                break;
+
+            case 7:
+                displayAll();
+                break;
+
+            case 0:
+                freeList(head);
+                freeList(adminClone);
+                printf("👋 Exiting the system. Goodbye!\n");
+                exit(0);
+
+            default:
+                printf("⚠️ Invalid choice! Try again.\n");
         }
-
-        // Pop remaining operators
-        while (top >= 0) {
-            if (strcmp(stack[top], "(") != 0) {
-                strcat(output, stack[top]);
-                strcat(output, " ");
-            }
-            top--;
-        }
-
-        // Trim trailing space if any
-        int len = strlen(output);
-        if (len > 0 && output[len - 1] == ' ')
-            output[len - 1] = '\0';
-
-        printf("%s\n", output);
     }
-
-    return 0;
 }
