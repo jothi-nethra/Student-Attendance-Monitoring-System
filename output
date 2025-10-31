@@ -1,0 +1,161 @@
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 1
+Enter Student ID: 01
+Enter Date (YYYY-MM-DD): 2001-10-25
+Enter Status (Present/Absent): Present
+✅ Attendance record added successfully.
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 1
+Enter Student ID: 02
+Enter Date (YYYY-MM-DD): 2007-02-26
+Enter Status (Present/Absent): Present
+✅ Attendance record added successfully.
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 1
+Enter Student ID: 03
+Enter Date (YYYY-MM-DD): 2007-02-25
+Enter Status (Present/Absent): Absent
+✅ Attendance record added successfully.
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 2
+Enter Student ID to delete: 03
+Enter Date (YYYY-MM-DD): 2007-02-25
+✅ Record deleted successfully.
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 3
+Enter Student ID to search: 02
+Enter Date (YYYY-MM-DD): 2007-02-26
+🔍 Found: Student ID: 2 | Date: 2007-02-26 | Status: Present
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 4
+Enter Date (YYYY-MM-DD): 2001-10-25
+
+📅 Attendance for 2001-10-25:
+--------------------------------------
+Student ID: 1 | Status: Present
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 5
+
+🔄 Attendance Records in Reverse Order:
+--------------------------------------
+Student ID: 2 | Date: 2007-02-26 | Status: Present
+Student ID: 1 | Date: 2001-10-25 | Status: Present
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 6
+✅ Attendance list cloned successfully.
+
+📁 Cloned Records:
+
+📋 All Attendance Records:
+--------------------------------------
+Student ID: 1 | Date: 2001-10-25 | Status: Present
+Student ID: 2 | Date: 2007-02-26 | Status: Present
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 7
+
+📋 All Attendance Records:
+--------------------------------------
+Student ID: 1 | Date: 2001-10-25 | Status: Present
+Student ID: 2 | Date: 2007-02-26 | Status: Present
+
+====== Student Attendance Monitoring System ======
+1. Add Attendance Record
+2. Delete Attendance Record
+3. Search Attendance
+4. Display Attendance by Date
+5. Display All Attendance (Reverse Order)
+6. Clone Attendance List (for Admin)
+7. Display All Records
+0. Exit
+==================================================
+Enter your choice: 0
+👋 Exiting the system. Goodbye!
